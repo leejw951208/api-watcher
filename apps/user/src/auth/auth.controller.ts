@@ -10,8 +10,8 @@ import {
     THROTTLER_ERROR,
     USER_ERROR
 } from '@libs/common'
-import { Body, Controller, Delete, HttpCode, HttpStatus, Patch, Post, Req, Res, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Ip, Patch, Post, Query, Req, Res, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 import type { Request, Response } from 'express'
 import { AuthService } from './auth.service'
@@ -92,22 +92,38 @@ export class AuthController {
 
     @ApiOperation({
         summary: '비밀번호 재설정 요청',
-        description: '이메일과 휴대폰번호를 확인하여 비밀번호 재설정 토큰을 발급합니다. 재설정 토큰은 15분간 유효합니다.'
+        description: '이메일로 비밀번호 재설정 링크를 발송합니다. 계정 존재 여부와 관계없이 항상 동일한 응답을 반환합니다.'
     })
     @ApiBody({ type: PasswordResetInitRequestDto })
     @ApiOkBaseResponse({ type: PasswordResetInitResponseDto })
-    @ApiExceptionResponse([USER_ERROR.VERIFICATION_FAILED, THROTTLER_ERROR.RATE_LIMIT_EXCEEDED])
-    @Throttle({ ip: { limit: 5, ttl: 300000 } })
+    @ApiExceptionResponse(THROTTLER_ERROR.RATE_LIMIT_EXCEEDED)
+    @Throttle({ ip: { limit: 5, ttl: 3600000 } })
     @Public()
     @Post('password-reset/request')
-    async requestPasswordReset(@Body() reqDto: PasswordResetInitRequestDto): Promise<ResponseDto<PasswordResetInitResponseDto>> {
-        const result = await this.service.requestPasswordReset(reqDto)
-        return new ResponseDto(result)
+    async requestPasswordReset(
+        @Body() reqDto: PasswordResetInitRequestDto,
+        @Ip() ip: string
+    ): Promise<ResponseDto<PasswordResetInitResponseDto>> {
+        await this.service.requestPasswordReset(reqDto, ip)
+        return new ResponseDto({ message: '이메일을 확인해주세요.' } as PasswordResetInitResponseDto)
+    }
+
+    @ApiOperation({
+        summary: '비밀번호 재설정 토큰 유효성 검증',
+        description: '비밀번호 입력 폼 진입 전 토큰이 유효한지 확인합니다. 토큰을 소비하지 않습니다.'
+    })
+    @ApiQuery({ name: 'token', type: String, description: '비밀번호 재설정 토큰' })
+    @ApiOkResponse({ description: '토큰 유효' })
+    @ApiExceptionResponse(AUTH_ERROR.INVALID_RESET_TOKEN)
+    @Public()
+    @Get('password-reset/verify')
+    async verifyPasswordResetToken(@Query('token') token: string): Promise<void> {
+        await this.service.verifyPasswordResetToken(token)
     }
 
     @ApiOperation({
         summary: '비밀번호 재설정',
-        description: '재설정 토큰을 사용하여 새 비밀번호로 변경합니다.'
+        description: '재설정 토큰을 사용하여 새 비밀번호로 변경합니다. 토큰은 1회만 사용 가능합니다.'
     })
     @ApiBody({ type: PasswordResetConfirmRequestDto })
     @ApiNoContentResponse({ description: '비밀번호 재설정 성공' })

@@ -12,6 +12,12 @@ export type CommonEnv = {
     aesAlgorithm: string
     aesSecretKey: string
     bcryptSaltRounds: number
+    emailHost: string
+    emailPort: number
+    emailUser: string
+    emailPassword: string
+    emailFrom: string
+    appBaseUrl: string
 }
 
 export const commonEnvConfig = registerAs<CommonEnv>('common', () => ({
@@ -25,5 +31,11 @@ export const commonEnvConfig = registerAs<CommonEnv>('common', () => ({
     jwtSecretKey: process.env.JWT_SECRET_KEY ?? 'your-secret-key',
     aesAlgorithm: process.env.AES_ALGORITHM ?? 'aes-256-cbc',
     aesSecretKey: process.env.AES_SECRET_KEY ?? 'your-secret-key',
-    bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS ?? 10)
+    bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS ?? 10),
+    emailHost: process.env.EMAIL_HOST ?? 'smtp.gmail.com',
+    emailPort: Number(process.env.EMAIL_PORT ?? 587),
+    emailUser: process.env.EMAIL_USER ?? '',
+    emailPassword: process.env.EMAIL_PASSWORD ?? '',
+    emailFrom: process.env.EMAIL_FROM ?? '',
+    appBaseUrl: process.env.APP_BASE_URL ?? 'http://localhost:3000'
 }))
