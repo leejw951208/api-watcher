@@ -1,0 +1,37 @@
+enum UserStatus {
+    ACTIVE
+    INACTIVE
+    WITHDRAWN
+
+    @@schema("public")
+}
+
+enum Owner {
+    ADMIN
+    USER
+
+    @@schema("public")
+}
+
+enum TokenType {
+    JWT
+
+    @@schema("public")
+}
+
+enum PostStatus {
+    DRAFT
+    PUBLISHED
+    HIDDEN
+
+    @@schema("public")
+}
+
+enum NotificationType {
+    SYSTEM
+    POST
+    COMMENT
+    USER
+
+    @@schema("public")
+}

@@ -1,0 +1,44 @@
+model User {
+    id       Int        @id @default(autoincrement())
+    email    String     @unique @map("email")
+    password String     @map("password")
+    name     String     @map("name")
+    phone    String     @map("phone")
+    status   UserStatus @default(ACTIVE) @map("status")
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    userRoles         UserRole[]
+    posts             Post[]
+    notifications     Notification[]
+    notificationReads NotificationRead[]
+
+    @@map("user")
+    @@schema("base")
+}
+
+model UserRole {
+    id     Int  @id @default(autoincrement())
+    userId Int  @map("user_id")
+    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    roleId Int  @map("role_id")
+    role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    @@unique([userId, roleId])
+    @@map("user_role")
+    @@schema("base")
+}

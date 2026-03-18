@@ -1,0 +1,38 @@
+model Token {
+    id        Int       @id @default(autoincrement())
+    tokenHash String    @map("token_hash")
+    tokenType TokenType @map("token_type")
+    owner     Owner     @default(USER) @map("owner")
+    ownerId   Int       @map("owner_id")
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    tokenJwts TokenJwt[]
+
+    @@map("token")
+    @@schema("base")
+}
+
+model TokenJwt {
+    id        Int       @id @default(autoincrement())
+    tokenId   Int       @map("token_id")
+    token     Token     @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+    jti       String    @map("jti")
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    @@map("token_jwt")
+    @@schema("base")
+}
+

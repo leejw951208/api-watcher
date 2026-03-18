@@ -1,0 +1,59 @@
+model Role {
+    id          Int     @id @default(autoincrement())
+    name        String  @map("name")
+    owner       Owner   @default(USER) @map("owner")
+    description String? @map("description")
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    userRoles       UserRole[]
+    adminRoles      AdminRole[]
+    rolePermissions RolePermission[]
+
+    @@map("role")
+    @@schema("base")
+}
+
+model Permission {
+    id        Int       @id @default(autoincrement())
+    scope     String    @map("scope")
+    action    String    @map("action")
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    rolePermissions RolePermission[]
+
+    @@unique([scope, action])
+    @@map("permission")
+    @@schema("base")
+}
+
+model RolePermission {
+    id           Int        @id @default(autoincrement())
+    roleId       Int        @map("role_id")
+    role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    permissionId Int        @map("permission_id")
+    permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+    createdAt    DateTime   @default(now()) @map("created_at")
+    createdBy    Int        @map("created_by")
+    updatedAt    DateTime?  @map("updated_at")
+    updatedBy    Int?       @map("updated_by")
+    isDeleted    Boolean?   @default(false) @map("is_deleted")
+    deletedAt    DateTime?  @map("deleted_at")
+    deletedBy    Int?       @map("deleted_by")
+
+    @@unique([roleId, permissionId])
+    @@map("role_permission")
+    @@schema("base")
+}

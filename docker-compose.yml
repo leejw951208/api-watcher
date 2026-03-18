@@ -1,0 +1,82 @@
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: production
+            args:
+                APP: api
+        container_name: monorepo-api
+        ports:
+            - '3000:3000'
+        environment:
+            - NODE_ENV=prod
+        env_file:
+            - ./envs/.env.prod
+            - ./apps/api/envs/.env.prod
+        depends_on:
+            db:
+                condition: service_healthy
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/v1/health']
+            interval: 30s
+            timeout: 3s
+            start_period: 40s
+            retries: 3
+        restart: unless-stopped
+        command: ['node', 'dist/apps/api/main.js']
+        networks:
+            - app-network
+    admin:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: production
+            args:
+                APP: admin
+        container_name: monorepo-admin
+        ports:
+            - '3001:3000'
+        environment:
+            - NODE_ENV=prod
+        env_file:
+            - ./envs/.env.prod
+            - ./apps/admin/envs/.env.prod
+        depends_on:
+            db:
+                condition: service_healthy
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:3001/admin/v1/health']
+            interval: 30s
+            timeout: 3s
+            start_period: 40s
+            retries: 3
+        restart: unless-stopped
+        command: ['node', 'dist/apps/admin/main.js']
+        networks:
+            - app-network
+    db:
+        image: postgres:15-alpine
+        container_name: monorepo-db
+        environment:
+            - POSTGRES_DB=monorepo
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - '5432:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U postgres']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        restart: unless-stopped
+        networks:
+            - app-network
+
+volumes:
+    postgres_data:
+
+networks:
+    app-network:
+        driver: bridge

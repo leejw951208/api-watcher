@@ -1,0 +1,42 @@
+model Admin {
+    id       Int        @id @default(autoincrement())
+    loginId  String     @unique @map("login_id")
+    password String     @map("password")
+    email    String     @unique @map("email")
+    name     String     @map("name")
+    phone    String     @map("phone")
+    status   UserStatus @default(ACTIVE) @map("status")
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    adminRoles AdminRole[]
+
+    @@map("admin")
+    @@schema("base")
+}
+
+model AdminRole {
+    id      Int   @id @default(autoincrement())
+    adminId Int   @map("admin_id")
+    admin   Admin @relation(fields: [adminId], references: [id])
+    roleId  Int   @map("role_id")
+    role    Role  @relation(fields: [roleId], references: [id])
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    @@unique([adminId, roleId])
+    @@map("admin_role")
+    @@schema("base")
+}

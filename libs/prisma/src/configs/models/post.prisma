@@ -1,0 +1,22 @@
+model Post {
+    id        Int        @id @default(autoincrement())
+    title     String     @map("title") @db.VarChar(200)
+    content   String     @map("content") @db.Text
+    userId    Int        @map("user_id")
+    user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    viewCount Int        @default(0) @map("view_count")
+    status    PostStatus @default(PUBLISHED) @map("status")
+
+    createdAt DateTime? @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    @@index([userId, status, isDeleted])
+    @@index([status, isDeleted, id])
+    @@map("post")
+    @@schema("base")
+}
