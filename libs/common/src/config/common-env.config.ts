@@ -3,9 +3,7 @@ import { registerAs } from '@nestjs/config'
 export type CommonEnv = {
     nodeEnv: string
     databaseUrl: string
-    redisHost: string
-    redisPort: number
-    redisPassword: string
+    redisUrl: string
     jwtAccessTokenTtl: number
     jwtRefreshTokenTtl: number
     jwtSecretKey: string
@@ -23,9 +21,7 @@ export type CommonEnv = {
 export const commonEnvConfig = registerAs<CommonEnv>('common', () => ({
     nodeEnv: process.env.NODE_ENV ?? 'local',
     databaseUrl: process.env.DATABASE_URL ?? 'postgres://postgres:postgres@localhost:5432/monorepo',
-    redisHost: process.env.REDIS_HOST ?? 'localhost',
-    redisPort: Number(process.env.REDIS_PORT ?? 6379),
-    redisPassword: process.env.REDIS_PASSWORD ?? '',
+    redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
     jwtAccessTokenTtl: Number(process.env.JWT_ACCESS_TOKEN_TTL ?? 3600000),
     jwtRefreshTokenTtl: Number(process.env.JWT_REFRESH_TOKEN_TTL ?? 604800000),
     jwtSecretKey: process.env.JWT_SECRET_KEY ?? 'your-secret-key',

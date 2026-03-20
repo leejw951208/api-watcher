@@ -23,7 +23,7 @@ async function main(): Promise<void> {
 
     // 4) 명령 실행
     try {
-        const configPath = path.resolve(process.cwd(), 'libs/prisma/src/configs/prisma.config.ts')
+        const configPath = path.resolve(process.cwd(), 'libs/prisma/src/config/prisma.config.ts')
         if (env === 'local' || env === 'dev' || env === 'test') {
             console.log(`🚀 ${env} 환경에서 마이그레이션을 적용합니다.`)
             execSync(`NODE_ENV=${env} npx prisma migrate dev --config=${configPath}`, { stdio: 'inherit' })

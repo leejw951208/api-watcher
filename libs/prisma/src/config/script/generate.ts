@@ -24,7 +24,7 @@ async function main(): Promise<void> {
     // 4) 마이그레이션 파일 생성
     try {
         console.log(`📝 ${env} 환경에서 Prisma 설정 업데이트를 진행합니다.`)
-        const configPath = path.resolve(process.cwd(), 'libs/prisma/src/configs/prisma.config.ts')
+        const configPath = path.resolve(process.cwd(), 'libs/prisma/src/config/prisma.config.ts')
         execSync(`NODE_ENV=${env} npx prisma generate --config=${configPath}`, { stdio: 'inherit' })
         console.log('✅ Prisma 설정 업데이트가 완료되었습니다.')
     } catch (error) {

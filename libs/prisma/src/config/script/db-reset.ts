@@ -24,7 +24,7 @@ async function main(): Promise<void> {
 
     try {
         if (env === 'local' || env === 'dev' || env === 'test') {
-            const configPath = path.resolve(process.cwd(), 'libs/prisma/src/configs/prisma.config.ts')
+            const configPath = path.resolve(process.cwd(), 'libs/prisma/src/config/prisma.config.ts')
             console.log(`🚨 ${env} 환경 데이터베이스를 초기화합니다...`)
             execSync(`NODE_ENV=${env} npx prisma migrate reset --force --config=${configPath}`, { stdio: 'inherit' })
         } else {

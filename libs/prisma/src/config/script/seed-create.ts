@@ -24,7 +24,7 @@ async function main(): Promise<void> {
         .replace(/[^a-zA-Z0-9_-]/g, '')
         .toLowerCase()
 
-    const seedsDir = path.resolve(process.cwd(), 'libs/prisma/src/configs/seeds')
+    const seedsDir = path.resolve(process.cwd(), 'libs/prisma/src/config/seed')
     const filename = `${num}_${normalized}.ts`
     const target = path.join(seedsDir, filename)
 

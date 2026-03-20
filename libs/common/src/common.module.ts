@@ -8,7 +8,7 @@ import { RedisModule } from './redis'
 
 @Global()
 @Module({
-    imports: [CustomThrottlerModule, RedisModule.forRootAsync(), EmailModule],
+    imports: [RedisModule.forRootAsync(), CustomThrottlerModule, EmailModule],
     providers: [CryptoService, TokenService, JwtAccessStrategy, JwtRefreshStrategy],
     exports: [CryptoService, TokenService, JwtAccessStrategy, JwtRefreshStrategy, EmailModule]
 })

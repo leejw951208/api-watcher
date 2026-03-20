@@ -13,10 +13,7 @@ export class RedisModule {
             provide: REDIS_CLIENT,
             inject: [commonEnvConfig.KEY, WINSTON_MODULE_NEST_PROVIDER],
             useFactory: (config: ConfigType<typeof commonEnvConfig>, logger: Logger): Redis => {
-                const redis = new Redis({
-                    host: config.redisHost,
-                    port: config.redisPort,
-                    password: config.redisPassword || undefined,
+                const redis = new Redis(config.redisUrl, {
                     maxRetriesPerRequest: 3,
                     retryStrategy: (times) => {
                         if (times > 10) {

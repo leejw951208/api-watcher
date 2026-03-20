@@ -39,7 +39,7 @@ async function run() {
     // 시드 환경에서는 쿼리 로깅 비활성화
     const prisma = new PrismaClient({ adapter })
 
-    const seedsDir = path.resolve(process.cwd(), 'libs/prisma/src/configs/seeds')
+    const seedsDir = path.resolve(process.cwd(), 'libs/prisma/src/config/seed')
 
     // 실행 순서: 파일명 접두 숫자 오름차순 (예: 1_*.ts → 2_*.ts → 10_*.ts)
     const entries = fs

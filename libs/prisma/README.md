@@ -70,33 +70,33 @@ src/
 ### Prisma Client 생성
 
 ```bash
-yarn db:generate
+pnpm db:generate
 ```
 
 ### 마이그레이션
 
 ```bash
 # 마이그레이션 실행
-yarn db:migrate
+pnpm db:migrate
 
 # 새 마이그레이션 생성
-yarn db:migrate:create
+pnpm db:migrate:create
 ```
 
 ### 데이터베이스 초기화
 
 ```bash
-yarn db:reset
+pnpm db:reset
 ```
 
 ### 시드 데이터
 
 ```bash
 # 시드 파일 생성
-yarn db:seed:create
+pnpm db:seed:create
 
 # 시드 실행
-yarn db:seed:run
+pnpm db:seed:run
 ```
 
 ## 사용 방법
@@ -186,7 +186,7 @@ const result = await prisma.$queryRawTyped(getUserStats(userId))
 
 ## 주의사항
 
-1. **스키마 변경 후**: 반드시 `yarn db:generate` 실행
+1. **스키마 변경 후**: 반드시 `pnpm db:generate` 실행
 2. **모델 추가/수정 후**: 마이그레이션 생성 및 실행
 3. **generated 폴더**: Git에서 제외 (.gitignore)
 4. **환경 변수**: `DATABASE_URL` 필수 설정

@@ -25,20 +25,20 @@ apps/
 
 ```bash
 # User 앱 실행
-yarn start:local:user
+pnpm start:local:user
 
 # Admin 앱 실행
-yarn start:local:admin
+pnpm start:local:admin
 ```
 
 ### 빌드
 
 ```bash
 # User 앱 빌드
-yarn build:user
+pnpm build:user
 
 # Admin 앱 빌드
-yarn build:admin
+pnpm build:admin
 ```
 
 ### Docker

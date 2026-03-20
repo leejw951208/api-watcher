@@ -1,0 +1,43 @@
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: production
+            args:
+                APP: user
+        container_name: api-watcher-user
+        ports:
+            - '3000:3000'
+        environment:
+            - NODE_ENV=prod
+        env_file:
+            - ./envs/.env.prod
+            - ./apps/user/envs/.env.prod
+        restart: unless-stopped
+        command: ['node', 'dist/apps/user/main.js']
+        networks:
+            - app-network
+    admin:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: production
+            args:
+                APP: admin
+        container_name: api-watcher-admin
+        ports:
+            - '3001:3000'
+        environment:
+            - NODE_ENV=prod
+        env_file:
+            - ./envs/.env.prod
+            - ./apps/admin/envs/.env.prod
+        restart: unless-stopped
+        command: ['node', 'dist/apps/admin/main.js']
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

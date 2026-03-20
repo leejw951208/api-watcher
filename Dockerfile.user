@@ -1,0 +1,44 @@
+# 빌드 스테이지
+FROM node:24.14.0-alpine AS builder
+
+WORKDIR /app
+
+# pnpm 설치
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# 패키지 파일 복사
+COPY package.json pnpm-lock.yaml ./
+
+# 의존성 설치
+RUN pnpm install --frozen-lockfile
+
+# 소스코드 복사
+COPY . .
+ARG APP=user
+
+# Prisma 클라이언트 생성
+RUN pnpm db:generate:prod
+
+# 애플리케이션 빌드
+RUN pnpm build:${APP}
+
+# 프로덕션 스테이지
+FROM node:24.14.0-alpine AS production
+
+WORKDIR /app
+
+# pnpm 설치
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# 패키지 파일 복사
+COPY package.json pnpm-lock.yaml ./
+
+# 프로덕션 의존성만 설치
+RUN pnpm install --frozen-lockfile --prod
+
+# Prisma 생성 클라이언트 복사
+COPY --from=builder /app/libs/prisma/src/generated ./libs/prisma/src/generated
+
+# 빌드된 애플리케이션 복사
+ARG APP=user
+COPY --from=builder /app/dist/apps/${APP} ./dist/apps/${APP}

@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common'
-import { ConfigType } from '@nestjs/config'
 import { ThrottlerModule } from '@nestjs/throttler'
-import { commonEnvConfig } from '../config'
+import Redis from 'ioredis'
+import { REDIS_CLIENT } from '../redis'
 import { CustomThrottlerStorage } from './custom-throttler.storage'
 
 @Module({
     imports: [
         ThrottlerModule.forRootAsync({
-            inject: [commonEnvConfig.KEY],
-            useFactory: (config: ConfigType<typeof commonEnvConfig>) => ({
+            inject: [REDIS_CLIENT],
+            useFactory: (redis: Redis) => ({
                 throttlers: [
                     { name: 'ip', ttl: 60000, limit: 10000 }, // 기본 전역 설정
                     { name: 'user', ttl: 60000, limit: 10000 } // 기본 전역 설정
                 ],
-                storage: new CustomThrottlerStorage(config)
+                storage: new CustomThrottlerStorage(redis)
             })
         })
     ],

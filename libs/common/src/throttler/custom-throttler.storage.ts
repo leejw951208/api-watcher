@@ -1,8 +1,7 @@
-import { Injectable, OnModuleDestroy } from '@nestjs/common'
-import { type ConfigType } from '@nestjs/config'
+import { Inject, Injectable } from '@nestjs/common'
 import { ThrottlerStorage } from '@nestjs/throttler'
 import Redis from 'ioredis'
-import { commonEnvConfig } from '../config'
+import { REDIS_CLIENT } from '../redis'
 
 /**
  * Rate Limiting 결과 레코드
@@ -21,30 +20,14 @@ interface ThrottlerStorageData {
  * - 인메모리 스토리지는 단일 인스턴스에서만 동작
  * - Redis 사용 시 여러 서버 인스턴스가 동일한 카운트 공유
  *
- * ioredis를 직접 사용하는 이유:
- * - INCR 명령어로 원자적(atomic) 카운트 증가 보장
- * - cache-manager는 get/set 분리로 동시 요청 시 Race Condition 발생 가능
- * - 밀리초 단위 TTL 지원 (PEXPIRE)
+ * INCR 명령어로 원자적(atomic) 카운트 증가 보장
+ * cache-manager의 get/set 분리와 달리 Race Condition 없음
  */
 @Injectable()
-export class CustomThrottlerStorage implements ThrottlerStorage, OnModuleDestroy {
-    private readonly redis: Redis
+export class CustomThrottlerStorage implements ThrottlerStorage {
     private readonly keyPrefix = 'throttler'
 
-    constructor(private readonly config: ConfigType<typeof commonEnvConfig>) {
-        this.redis = new Redis({
-            host: this.config.redisHost,
-            port: this.config.redisPort,
-            password: this.config.redisPassword
-        })
-    }
-
-    /**
-     * 모듈 종료 시 Redis 연결 정리
-     */
-    async onModuleDestroy() {
-        await this.redis.quit()
-    }
+    constructor(@Inject(REDIS_CLIENT) private readonly redis: Redis) {}
 
     /**
      * 요청 횟수 증가 및 현재 상태 반환

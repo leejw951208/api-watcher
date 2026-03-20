@@ -33,26 +33,26 @@ src/
 
 ```bash
 # 개발 환경 실행
-yarn start:local:admin
+pnpm start:local:admin
 
 # 디버그 모드
-yarn start:debug
+pnpm start:debug
 
 # 빌드
-yarn build:admin
+pnpm build:admin
 ```
 
 ## 테스트
 
 ```bash
 # 단위 테스트
-yarn test:admin
+pnpm test:admin
 
 # E2E 테스트
-yarn test:e2e
+pnpm test:e2e
 
 # 커버리지
-yarn test:cov
+pnpm test:cov
 ```
 
 ## 인증 방식
