@@ -6,7 +6,8 @@ export const validateEnvSchema = commonEnvSchema.concat(
         APP_NAME: Joi.string().required(),
         APP_VERSION: Joi.string().required(),
         API_VERSION: Joi.string().required(),
-        PORT: Joi.string().required()
+        PORT: Joi.string().required(),
+        CORS_ORIGIN: Joi.string().required()
     })
 )
 

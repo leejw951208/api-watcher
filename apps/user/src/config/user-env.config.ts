@@ -5,11 +5,13 @@ export interface UserEnv {
     appVersion: string
     apiVersion: string
     port: number
+    corsOrigin: string
 }
 
 export const userEnvConfig = registerAs<UserEnv>('user', () => ({
     appName: process.env.APP_NAME ?? 'User',
     appVersion: process.env.APP_VERSION ?? '0.0.1',
     apiVersion: process.env.API_VERSION ?? 'v1',
-    port: Number(process.env.PORT) ?? 3000
+    port: Number(process.env.PORT) ?? 3000,
+    corsOrigin: process.env.CORS_ORIGIN ?? 'http://localhost:3000'
 }))

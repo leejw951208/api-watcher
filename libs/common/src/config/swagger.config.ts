@@ -11,8 +11,6 @@ export function setupSwagger(app: INestApplication, appName?: string): void {
 
     const swaggerUri = appName ? `${appName}/api/docs` : '/api/docs'
 
-    console.log(swaggerUri)
-
     const documentBuilder = new DocumentBuilder()
         .setTitle(title)
         .setDescription(description)

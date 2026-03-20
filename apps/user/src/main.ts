@@ -33,6 +33,11 @@ async function bootstrap() {
 
     app.use(cookieParser())
 
+    app.enableCors({
+        origin: [config.get<string>('user.corsOrigin') ?? 'http://localhost:3000'],
+        credentials: true
+    })
+
     // 스웨거 설정
     setupSwagger(app)
 
