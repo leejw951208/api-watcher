@@ -18,6 +18,8 @@ model User {
     posts             Post[]
     notifications     Notification[]
     notificationReads NotificationRead[]
+    apiEndpoints      ApiEndpoint[]
+    webhookChannels   WebhookChannel[]
 
     @@map("user")
     @@schema("base")

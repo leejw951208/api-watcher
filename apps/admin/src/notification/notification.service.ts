@@ -29,9 +29,9 @@ export class NotificationService {
             }
         })
 
-        return new OffsetResponseDto(
-            plainToInstance(NotificationResponseDto, items, { excludeExtraneousValues: true }),
-            { page: dto.page, totalCount }
-        )
+        return new OffsetResponseDto(plainToInstance(NotificationResponseDto, items, { excludeExtraneousValues: true }), {
+            page: dto.page,
+            totalCount
+        })
     }
 }

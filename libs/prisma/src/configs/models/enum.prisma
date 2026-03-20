@@ -32,6 +32,49 @@ enum NotificationType {
     POST
     COMMENT
     USER
+    MONITORING
+
+    @@schema("public")
+}
+
+enum EndpointStatus {
+    UP
+    DOWN
+    SLOW
+    PAUSED
+
+    @@schema("public")
+}
+
+enum HttpMethod {
+    GET
+    POST
+    HEAD
+
+    @@schema("public")
+}
+
+enum CheckInterval {
+    SEC_30
+    MIN_1
+    MIN_3
+    MIN_5
+
+    @@schema("public")
+}
+
+enum WebhookType {
+    SLACK
+    GENERIC
+
+    @@schema("public")
+}
+
+enum AlertType {
+    DOWN
+    UP
+    SLOW
+    TEST
 
     @@schema("public")
 }

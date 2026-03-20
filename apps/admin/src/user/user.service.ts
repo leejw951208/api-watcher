@@ -18,10 +18,10 @@ export class AdminUserService {
 
     async getUsers(dto: AdminUserPaginationRequestDto): Promise<OffsetResponseDto<AdminUserResponseDto>> {
         const { items, totalCount } = await this.repository.findUsersOffset(dto)
-        return new OffsetResponseDto(
-            plainToInstance(AdminUserResponseDto, items, { excludeExtraneousValues: true }),
-            { page: dto.page, totalCount }
-        )
+        return new OffsetResponseDto(plainToInstance(AdminUserResponseDto, items, { excludeExtraneousValues: true }), {
+            page: dto.page,
+            totalCount
+        })
     }
 
     async updateUserStatus(userId: number, status: UserStatus): Promise<void> {

@@ -1,0 +1,48 @@
+model ApiEndpoint {
+    id                  Int            @id @default(autoincrement())
+    userId              Int            @map("user_id")
+    user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+    name                String         @map("name") @db.VarChar(100)
+    url                 String         @map("url") @db.VarChar(500)
+    method              HttpMethod     @default(GET) @map("method")
+    headers             Json?          @map("headers")
+    body                Json?          @map("body")
+    expectedStatus      Int            @default(200) @map("expected_status")
+    timeout             Int            @default(10000) @map("timeout")
+    interval            CheckInterval  @default(MIN_1) @map("interval")
+    status              EndpointStatus @default(UP) @map("status")
+    failureThreshold    Int            @default(3) @map("failure_threshold")
+    consecutiveFailures Int            @default(0) @map("consecutive_failures")
+    lastCheckedAt       DateTime?      @map("last_checked_at")
+    isPaused            Boolean        @default(false) @map("is_paused")
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    createdBy Int?      @map("created_by")
+    updatedAt DateTime? @map("updated_at")
+    updatedBy Int?      @map("updated_by")
+    isDeleted Boolean?  @default(false) @map("is_deleted")
+    deletedAt DateTime? @map("deleted_at")
+    deletedBy Int?      @map("deleted_by")
+
+    monitoringLogs MonitoringLog[]
+
+    @@index([userId])
+    @@map("api_endpoint")
+    @@schema("public")
+}
+
+model MonitoringLog {
+    id           Int         @id @default(autoincrement())
+    endpointId   Int         @map("endpoint_id")
+    endpoint     ApiEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+    statusCode   Int?        @map("status_code")
+    responseTime Int?        @map("response_time")
+    isSuccess    Boolean     @map("is_success")
+    errorMessage String?     @map("error_message") @db.VarChar(500)
+
+    createdAt DateTime @default(now()) @map("created_at")
+
+    @@index([endpointId, createdAt])
+    @@map("monitoring_log")
+    @@schema("public")
+}

@@ -18,10 +18,10 @@ export class AdminPostService {
 
     async getPosts(dto: AdminPostPaginationRequestDto): Promise<OffsetResponseDto<AdminPostResponseDto>> {
         const { items, totalCount } = await this.repository.findPostsOffset(dto)
-        return new OffsetResponseDto(
-            plainToInstance(AdminPostResponseDto, items, { excludeExtraneousValues: true }),
-            { page: dto.page, totalCount }
-        )
+        return new OffsetResponseDto(plainToInstance(AdminPostResponseDto, items, { excludeExtraneousValues: true }), {
+            page: dto.page,
+            totalCount
+        })
     }
 
     async updatePostStatus(postId: number, status: PostStatus): Promise<void> {

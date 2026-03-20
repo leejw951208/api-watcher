@@ -19,3 +19,11 @@ export type UserErrorType = typeof NotFoundType | 'ALREADY_EXISTS_EMAIL' | 'VERI
 export type PostErrorType = typeof NotFoundType | 'FORBIDDEN'
 export type NotificationErrorType = typeof NotFoundType
 export type ThrottlerErrorType = 'RATE_LIMIT_EXCEEDED'
+export type MonitoringErrorType =
+    | typeof NotFoundType
+    | 'DUPLICATE_URL'
+    | 'INVALID_URL'
+    | 'CHECK_FAILED'
+    | 'ENDPOINT_LIMIT_EXCEEDED'
+    | 'FORBIDDEN'
+export type WebhookErrorType = typeof NotFoundType | 'INVALID_URL' | 'CHANNEL_LIMIT_EXCEEDED' | 'DUPLICATE_URL' | 'DISPATCH_FAILED' | 'FORBIDDEN'

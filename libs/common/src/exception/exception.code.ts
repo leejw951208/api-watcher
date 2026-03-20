@@ -1,13 +1,15 @@
 import {
     AuthErrorType,
     BadRequestType,
+    MonitoringErrorType,
     NotFoundType,
     NotificationErrorType,
     PostErrorType,
     SeedErrorType,
     ServerErrorType,
     ThrottlerErrorType,
-    UserErrorType
+    UserErrorType,
+    WebhookErrorType
 } from './exception.type'
 
 export interface ExceptionCodeData {
@@ -174,5 +176,75 @@ export const THROTTLER_ERROR: {
         status: 429,
         code: 'THROTTLER_ERROR_001',
         message: '요청 횟수를 초과했습니다. 잠시 후 다시 시도해주세요.'
+    }
+}
+
+export const MONITORING_ERROR: {
+    [key in MonitoringErrorType]: ExceptionCodeData
+} = {
+    NOT_FOUND: {
+        status: 404,
+        code: 'MONITORING_ERROR_001',
+        message: '모니터링 엔드포인트를 찾을 수 없습니다.'
+    },
+    DUPLICATE_URL: {
+        status: 400,
+        code: 'MONITORING_ERROR_002',
+        message: '이미 등록된 URL입니다.'
+    },
+    INVALID_URL: {
+        status: 400,
+        code: 'MONITORING_ERROR_003',
+        message: '유효하지 않은 URL 형식입니다.'
+    },
+    CHECK_FAILED: {
+        status: 500,
+        code: 'MONITORING_ERROR_004',
+        message: '헬스체크 실행 중 오류가 발생했습니다.'
+    },
+    ENDPOINT_LIMIT_EXCEEDED: {
+        status: 400,
+        code: 'MONITORING_ERROR_005',
+        message: '엔드포인트 등록 제한을 초과했습니다.'
+    },
+    FORBIDDEN: {
+        status: 403,
+        code: 'MONITORING_ERROR_006',
+        message: '해당 엔드포인트에 접근 권한이 없습니다.'
+    }
+}
+
+export const WEBHOOK_ERROR: {
+    [key in WebhookErrorType]: ExceptionCodeData
+} = {
+    NOT_FOUND: {
+        status: 404,
+        code: 'WEBHOOK_ERROR_001',
+        message: 'Webhook 채널을 찾을 수 없습니다.'
+    },
+    INVALID_URL: {
+        status: 400,
+        code: 'WEBHOOK_ERROR_002',
+        message: '올바르지 않은 Webhook URL입니다.'
+    },
+    CHANNEL_LIMIT_EXCEEDED: {
+        status: 400,
+        code: 'WEBHOOK_ERROR_003',
+        message: 'Webhook 채널 수 제한(5개)을 초과했습니다.'
+    },
+    DUPLICATE_URL: {
+        status: 400,
+        code: 'WEBHOOK_ERROR_004',
+        message: '이미 등록된 Webhook URL입니다.'
+    },
+    DISPATCH_FAILED: {
+        status: 500,
+        code: 'WEBHOOK_ERROR_005',
+        message: 'Webhook 발송에 실패했습니다.'
+    },
+    FORBIDDEN: {
+        status: 403,
+        code: 'WEBHOOK_ERROR_006',
+        message: '해당 Webhook 채널에 접근할 수 없습니다.'
     }
 }

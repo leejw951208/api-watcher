@@ -26,13 +26,16 @@ NestJS CLI 기반 모노레포 스타터킷. 두 개의 독립 앱(User API, Adm
 ## 주요 명령어
 
 ### 개발 서버 실행
+
 ```bash
 pnpm start:local:user   # User 앱 (watch 모드)
 pnpm start:local:admin  # Admin 앱 (watch 모드)
 ```
+
 두 앱을 동시에 로컬에서 실행하면 포트 충돌(3000)이 발생합니다. Docker를 사용하면 User는 3000, Admin은 3001 포트로 분리됩니다.
 
 ### 빌드
+
 ```bash
 pnpm build             # 전체 빌드 (user + admin)
 pnpm build:user
@@ -40,6 +43,7 @@ pnpm build:admin
 ```
 
 ### 테스트
+
 ```bash
 pnpm test              # 전체 테스트
 pnpm test:user         # User 앱 테스트만
@@ -47,24 +51,27 @@ pnpm test:admin        # Admin 앱 테스트만
 pnpm test:watch        # Watch 모드
 pnpm test:cov          # 커버리지 리포트
 ```
+
 `pre-push` Husky 훅이 `pnpm test`를 자동 실행합니다.
 
 ### 코드 품질
+
 ```bash
 pnpm lint              # ESLint 자동 수정
 pnpm format            # Prettier 포매팅
 ```
 
 ### 데이터베이스
+
 ```bash
 pnpm db:generate       # Prisma 클라이언트 생성
 pnpm db:migrate        # 마이그레이션 실행
-pnpm db:migrate:create # 새 마이그레이션 생성
 pnpm db:reset          # DB 초기화
 pnpm db:seed:run       # 시드 데이터 삽입
 ```
 
 ### Docker
+
 ```bash
 docker compose up -d --build         # 전체 실행
 docker compose up -d user --build    # User 앱만
@@ -118,6 +125,7 @@ envs/      # 공통 환경변수 (.env.local, .env.prod)
 ## 코드 컨벤션
 
 ### Prettier 설정
+
 - Single quotes: `true`
 - Trailing comma: `none`
 - Print width: `140`
@@ -125,10 +133,12 @@ envs/      # 공통 환경변수 (.env.local, .env.prod)
 - Semicolons: `false`
 
 ### ESLint 주요 규칙
+
 - `prisma.client`를 통해서만 PrismaClient에 접근 (직접 import 금지)
 - TypeScript ESLint 권장 설정 + Prettier 통합
 
 ### API 문서
+
 - Swagger는 `@libs/common/config/swagger` 설정을 사용
 - User: `http://localhost:3000/api/v1/docs`
 - Admin: `http://localhost:3000/admin/v1/docs`
@@ -138,6 +148,7 @@ envs/      # 공통 환경변수 (.env.local, .env.prod)
 ## 경로 별칭
 
 `tsconfig.json`에 정의된 경로 별칭:
+
 - `@libs/common/*` → `libs/common/src/*`
 - `@libs/prisma/*` → `libs/prisma/src/*`
 

@@ -1,4 +1,13 @@
-import { ApiExceptionResponse, ApiOkBaseResponse, AUTH_ERROR, BaseException, JwtRefreshGuard, Public, ResponseDto, USER_ERROR } from '@libs/common'
+import {
+    ApiExceptionResponse,
+    ApiOkBaseResponse,
+    AUTH_ERROR,
+    BaseException,
+    JwtRefreshGuard,
+    Public,
+    ResponseDto,
+    USER_ERROR
+} from '@libs/common'
 import { Controller, Delete, HttpCode, HttpStatus, Post, Req, Res, UseGuards, Body } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiNoContentResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import type { Request, Response } from 'express'
@@ -18,7 +27,10 @@ export class AdminAuthController {
     @ApiExceptionResponse([USER_ERROR.NOT_FOUND, AUTH_ERROR.PASSWORD_NOT_MATCHED])
     @Public()
     @Post('signin')
-    async signin(@Body() reqDto: AdminSigninRequestDto, @Res({ passthrough: true }) res: Response): Promise<ResponseDto<AdminSigninResponseDto>> {
+    async signin(
+        @Body() reqDto: AdminSigninRequestDto,
+        @Res({ passthrough: true }) res: Response
+    ): Promise<ResponseDto<AdminSigninResponseDto>> {
         const result = await this.service.signin(reqDto)
         this.setRefreshToken(res, result.refreshToken)
         return new ResponseDto(result.resDto)

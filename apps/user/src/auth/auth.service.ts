@@ -1,4 +1,13 @@
-import { AUTH_ERROR, BaseException, commonEnvConfig, CryptoService, EmailService, REDIS_CLIENT, TokenService, USER_ERROR } from '@libs/common'
+import {
+    AUTH_ERROR,
+    BaseException,
+    commonEnvConfig,
+    CryptoService,
+    EmailService,
+    REDIS_CLIENT,
+    TokenService,
+    USER_ERROR
+} from '@libs/common'
 import { Owner, UserStatus } from '@libs/prisma'
 import { Inject, Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'

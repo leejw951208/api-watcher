@@ -11,7 +11,16 @@ import {
     USER_ERROR
 } from '@libs/common'
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Ip, Patch, Post, Query, Req, Res, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
+import {
+    ApiBearerAuth,
+    ApiBody,
+    ApiCreatedResponse,
+    ApiNoContentResponse,
+    ApiOkResponse,
+    ApiOperation,
+    ApiQuery,
+    ApiTags
+} from '@nestjs/swagger'
 import { Throttle } from '@nestjs/throttler'
 import type { Request, Response } from 'express'
 import { AuthService } from './auth.service'
