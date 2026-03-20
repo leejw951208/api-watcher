@@ -18,6 +18,9 @@ lerna-debug.log*
 # Claude Code
 .claude
 
+# bkit
+.bkit
+
 # Tests
 /coverage
 /.nyc_output
